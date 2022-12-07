@@ -1,0 +1,25 @@
+<% layout('layouts/boilerplate')%>
+
+<h1>All Courts</h1>
+<div>
+    <a href="/courts/new">Add Court</a>
+</div>
+<% for (let court of courts){%>
+<div class="card" mb-3>
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img-fluid" alt="" src="<%=court.image%>">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><%= court.title %> </h5>
+                <p class="card-text"><%= court.description %></p>
+                <p class="card-text">
+                    <small class="text-muted"><%= court.location%></small>
+                </p>
+                <a class="btn btn-primary" href="/courts/<%=court._id%>">View <%=court.title%></a>
+            </div>
+        </div>
+    </div>
+</div>
+<% }%>
