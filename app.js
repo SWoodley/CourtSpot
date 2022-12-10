@@ -29,6 +29,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+//Input validation middleware
 const validateCourt = (req, res, next) => {
     const { error } = courtSchema.validate(req.body);
     if (error) {
@@ -54,6 +55,7 @@ app.get('/courts/new', (req, res) => {
 
 app.post('/courts', validateCourt, catchAsync(async (req, res, next) => {
     // if (!req.body.court) throw new ExpressError('Invalid Court Data', 400);
+
     const court = new Court(req.body.court);
     await court.save();
     res.redirect(`/courts/${court._id}`)
