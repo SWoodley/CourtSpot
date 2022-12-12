@@ -2,11 +2,12 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { courtSchema } = require('./schemas.js');
+const { courtSchema, reviewSchema } = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Court = require('./models/Court');
+const Review = require('./models/review');
 
 mongoose.connect('mongodb://localhost:27017/court-spot', {
     useNewUrlParser: true,
@@ -31,7 +32,18 @@ app.use(methodOverride('_method'));
 
 //Input validation middleware
 const validateCourt = (req, res, next) => {
+    //check for an error from validation operation
     const { error } = courtSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
@@ -62,7 +74,7 @@ app.post('/courts', validateCourt, catchAsync(async (req, res, next) => {
 }))
 
 app.get('/courts/:id', catchAsync(async (req, res,) => {
-    const court = await Court.findById(req.params.id)
+    const court = await Court.findById(req.params.id).populate('reviews');
     res.render('courts/show', { court });
 }));
 
@@ -82,6 +94,22 @@ app.delete('/courts/:id', catchAsync(async (req, res) => {
     await Court.findByIdAndDelete(id);
     res.redirect('/courts');
 }));
+
+app.post('/courts/:id/reviews', validateReview, catchAsync(async (req, res) => {
+    const court = await Court.findById(req.params.id);
+    const review = new Review(req.body.review);
+    court.reviews.push(review);
+    await review.save();
+    await court.save();
+    res.redirect(`/courts/${court._id}`);
+}))
+
+app.delete('/courts/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Court.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/courts/${id}`);
+}))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
