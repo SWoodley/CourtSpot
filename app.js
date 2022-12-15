@@ -9,10 +9,17 @@ const methodOverride = require('method-override');
 const Court = require('./models/Court');
 const Review = require('./models/review');
 
+//import express routers
+const courts = require('./routes/courts');
+const reviews = require('./routes/reviews');
+
+
+//Setup for MongoDB connection
 mongoose.connect('mongodb://localhost:27017/court-spot', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
@@ -21,106 +28,38 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
+
+//Express middleware options
 const app = express();
 
-app.engine('ejs', ejsMate)
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.static('public')); //serve public folder to ejs files
 
-//Input validation middleware
-const validateCourt = (req, res, next) => {
-    //check for an error from validation operation
-    const { error } = courtSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+//Express routes
+app.use('/courts', courts);
+app.use('/courts/:id/reviews', reviews);
 
 app.get('/', (req, res) => {
     res.render('home')
 });
-app.get('/courts', catchAsync(async (req, res) => {
-    const courts = await Court.find({});
-    res.render('courts/index', { courts })
-}));
 
-app.get('/courts/new', (req, res) => {
-    res.render('courts/new');
-})
-
-
-app.post('/courts', validateCourt, catchAsync(async (req, res, next) => {
-    // if (!req.body.court) throw new ExpressError('Invalid Court Data', 400);
-
-    const court = new Court(req.body.court);
-    await court.save();
-    res.redirect(`/courts/${court._id}`)
-}))
-
-app.get('/courts/:id', catchAsync(async (req, res,) => {
-    const court = await Court.findById(req.params.id).populate('reviews');
-    res.render('courts/show', { court });
-}));
-
-app.get('/courts/:id/edit', catchAsync(async (req, res) => {
-    const court = await Court.findById(req.params.id)
-    res.render('courts/edit', { court });
-}))
-
-app.put('/courts/:id', validateCourt, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const court = await Court.findByIdAndUpdate(id, { ...req.body.court });
-    res.redirect(`/courts/${court._id}`)
-}));
-
-app.delete('/courts/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Court.findByIdAndDelete(id);
-    res.redirect('/courts');
-}));
-
-app.post('/courts/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const court = await Court.findById(req.params.id);
-    const review = new Review(req.body.review);
-    court.reviews.push(review);
-    await review.save();
-    await court.save();
-    res.redirect(`/courts/${court._id}`);
-}))
-
-app.delete('/courts/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Court.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/courts/${id}`);
-}))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
-})
+});
 
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something Went Wrong!'
     res.status(statusCode).render('error', { err })
-})
+});
 
 app.listen(3000, () => {
     console.log('Serving on port 3000')
-})
+});
