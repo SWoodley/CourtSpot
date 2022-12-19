@@ -30,31 +30,41 @@ router.get('/new', (req, res) => {
 
 router.post('/', validateCourt, catchAsync(async (req, res, next) => {
     // if (!req.body.court) throw new ExpressError('Invalid Court Data', 400);
-
     const court = new Court(req.body.court);
     await court.save();
+    req.flash('success', 'Successfully made a new court!')
     res.redirect(`/courts/${court._id}`)
 }))
 
 router.get('/:id', catchAsync(async (req, res,) => {
     const court = await Court.findById(req.params.id).populate('reviews');
+    if(!court){
+        req.flash('error', 'Court not found');
+        return res.redirect('/courts');
+    }
     res.render('courts/show', { court });
 }));
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const court = await Court.findById(req.params.id)
+    if(!court){
+        req.flash('error', 'Court not found');
+        return res.redirect('/courts');
+    }
     res.render('courts/edit', { court });
 }))
 
 router.put('/:id', validateCourt, catchAsync(async (req, res) => {
     const { id } = req.params;
     const court = await Court.findByIdAndUpdate(id, { ...req.body.court });
-    res.redirect(`/courts/${court._id}`)
+    req.flash('success', 'Update Successful!');
+    res.redirect(`/courts/${court._id}`);
 }));
 
 router.delete('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Court.findByIdAndDelete(id);
+    req.flash('success', 'Successfully deleted court');
     res.redirect('/courts');
 }));
 
