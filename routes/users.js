@@ -14,7 +14,7 @@ router.post('/register', catchAsync(async (req, res, next) => {
         const { email, username, password } = req.body;
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password);
-        req.login(registeredUser, err => {
+        req.login(registeredUser, err => {  
             if (err) return next(err);
             req.flash('success', 'Welcome to Court Spot!');
             res.redirect('/courts');
@@ -32,7 +32,7 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
     //runs if authentication is successful
     req.flash('success', 'welcome back!');
-    const redirectUrl = req.session.returnTo || '/courts';
+    const redirectUrl = req.session.returnTo || '/courts'; //Returns user to their last visited page
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 })
