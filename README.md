@@ -22,3 +22,5 @@ Authorization
 Cookies & Sessions
 Asynchronous JS
 Error Handling
+
+TODO: Add joi Schema for Users
