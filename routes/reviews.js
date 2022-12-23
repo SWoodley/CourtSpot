@@ -14,7 +14,7 @@ router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     court.reviews.push(review);
     await review.save();
     await court.save();
-    req.flash('success', 'Successsfully created a new review!')
+    req.flash('success', 'Successsfully created a new review!');
     res.redirect(`/courts/${court._id}`);
 }))
 
@@ -22,7 +22,7 @@ router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async (req, r
     const { id, reviewId } = req.params;
     await Court.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
-    req.flash('success', `Successsfully deleted review`)
+    req.flash('success', `Successsfully deleted review`);
     res.redirect(`/courts/${id}`);
 }))
 
