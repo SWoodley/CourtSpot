@@ -32,14 +32,9 @@
         <% if(currentUser) { %>
         <h2>Leave a Review</h2>
         <form action="/courts/<%=court._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
-            <!--<div class="mb-3">
-                <label class="form-label" for="rating">Rating</label>
-                <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
-            </div> -->
             <div class="mb-3">
-                <fieldset class="starability-basic starability-growRotate">
-                    <legend>First rating:</legend>
-                    <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+                <fieldset class="starability-growRotate">
+                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
                     <input type="radio" id="first-rate1" name="review[rating]" value="1" />
                     <label for="first-rate1" title="Terrible">1 star</label>
                     <input type="radio" id="first-rate2" name="review[rating]" value="2" />
