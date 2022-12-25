@@ -9,7 +9,7 @@ EJS (Embedded JavaScript Templating)\
 Bootstrap\
 noSQL Mongo database w/ Mongoose\
 Node.js / various Node libraries\
-Express.js web framework\
+Express.js web framework
 
 ## Additional Features to note
 
@@ -21,6 +21,8 @@ Authentication\
 Authorization\
 Cookies & Sessions\
 Asynchronous JS\
-Error Handling\
+Error Handling
+MVC design pattern
 
-TODO: Add joi Schema for Users
+TODO: Add joi Schema for Users\
+TODO: Session secret should be an environment variable
