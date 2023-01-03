@@ -6,7 +6,7 @@ This project was created to demonstrate several core web development techniques 
 ## Tools Used
 
 EJS (Embedded JavaScript Templating)\
-Bootstrap\
+Bootstrap 5\
 noSQL Mongo database w/ Mongoose\
 Node.js / various Node libraries\
 Express.js web framework
@@ -21,8 +21,6 @@ Authentication\
 Authorization\
 Cookies & Sessions\
 Asynchronous JS\
-Error Handling
-MVC design pattern
-
-TODO: Add joi Schema for Users\
-TODO: Session secret should be an environment variable
+Error Handling\
+MVC design pattern\
+File Uploads
