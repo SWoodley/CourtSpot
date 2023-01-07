@@ -14,7 +14,12 @@ module.exports.renderNewForm = (req, res) => {
 }
 
 module.exports.createCourt = async (req, res, next) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.court.location,
+        limit: 1
+    }).send()
     const court = new Court(req.body.court);
+    court.geometry = geoData.body.features[0].geometry;
     court.images = req.files.map(f => ({ url: f.path, filename: f.filename })); //make an array of images and add it to the model
     court.author = req.user._id;
     await court.save();

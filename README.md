@@ -17,10 +17,12 @@ EJS template functionality\
 Fluid & responsive design\
 REST Constraints\
 NoSQL database w/ Complex Schema design\
+Flash Messages\
 Authentication\
 Authorization\
 Cookies & Sessions\
 Asynchronous JS\
 Error Handling\
 MVC design pattern\
-File Uploads
+File Uploads using Cloudinary API
+Maps using Mapbox API
