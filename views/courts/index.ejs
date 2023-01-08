@@ -1,12 +1,10 @@
 <% layout('layouts/boilerplate')%>
-<div id="map" style="width: 100%; height: 500px"></div>
+<div id="cluster-map"></div>
+<div class="container"></div>
+<h1 class="m-3">All Courts</h1>
 
-<h1>All Courts</h1>
-<div>
-    <a href="/courts/new">Add Court</a>
-</div>
 <% for (let court of courts){%>
-<div class="card" mb-3>
+<div class="card mb-3">
     <div class="row">
         <div class="col-md-4">
             <% if(court.images.length){ %> 
