@@ -12,6 +12,8 @@ ImageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200');
 });
 
+const opts = { toJSON: { virtuals: true } };
+
 const CourtSchema = new Schema({
     title: String,
     images: [ImageSchema],
@@ -39,6 +41,10 @@ const CourtSchema = new Schema({
             ref: 'Review'
         }
     ]
+}, opts);
+
+CourtSchema.virtual('properties.popUpMarkup').get(function () {
+    return `<a href="/courts/${this._id}">${this.title}</a></br><p>${this.description.substring(0, 25)}...</p>`;
 });
 
 //Delete all reviews when a court is deleted

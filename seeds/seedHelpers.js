@@ -1,20 +1,20 @@
 module.exports.descriptors = [
-    'Forest',
+    'Athletic',
     'Roaring',
-    'Cascade',
+    'Deuce',
     'Tumbling',
-    'Silent',
-    'Redwood',
+    'Hard-hitting',
+    'Serve',
     'Golden',
     'Topspin',
-    'Maple',
-    'Misty',
-    'Elk',
+    'Pro',
+    'Doubles',
+    'Advantage',
     'Oncourt',
     'Ocean',
     'Racquet',
     'Sky',
-    'Dusty',
+    'Athletics',
     'Diamond'
 ]
 
@@ -27,16 +27,17 @@ module.exports.places = [
     'Tennis Center',
     'Meadows',
     'Courts',
-    'Bay',
+    'Venue',
     'Country Club',
     'River',
-    'Creek',
+    'Rally',
     'Club',
     'Bay',
     'Spring',
     'Tennis Club',
-    'Sands',
+    'Clay Club',
     'Cliffs',
-    'Hollow'
+    'Surfaces',
+    'Courts'
 ]
 
