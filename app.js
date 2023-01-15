@@ -16,6 +16,9 @@ const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
+const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/court-spot';
+const MongoDBStore = require("connect-mongo");
+
 
 //import express routers
 const courtRoutes = require('./routes/courts');
@@ -25,7 +28,8 @@ const userRoutes = require('./routes/users');
 
 
 //Setup for MongoDB connection
-mongoose.connect('mongodb://localhost:27017/court-spot', {
+//'mongodb://localhost:27017/court-spot'
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -51,9 +55,22 @@ app.use(methodOverride('_method'));
 app.use(express.static('public')); //serve public folder to ejs files
 app.use(mongoSanitize()); //protection against Mongo injection
 
+const secret = process.env.SECRET || 'changethissecretlater'
+
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60 //(in seconds) lazy session update
+});
+
+store.on("error", function(e){
+    console.log("SESSION STORE ERROR", e);
+})
+
 const sessionConfig = {
+    store,      //store = store
     name: 'session',
-    secret: 'changethissecretlater',
+    secret,
     resave: false, 
     saveUninitialized: true, //save empty, unmodified session objects in the session store
     cookie: {
@@ -151,6 +168,8 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err })
 });
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`)
 });

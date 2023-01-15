@@ -3,6 +3,8 @@ Enables users to find information about local tennis courts, create accounts, cr
 
 This project was created to demonstrate several core web development techniques and functionality.
 
+TODO: Add Location-based services from user location
+
 ## Tools Used
 
 EJS (Embedded JavaScript Templating)\
