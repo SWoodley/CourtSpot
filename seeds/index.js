@@ -3,7 +3,9 @@ const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Court = require('../models/Court');
 
-mongoose.connect('mongodb://localhost:27017/court-spot', {
+const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/court-spot';
+
+mongoose.connect(dbURL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
