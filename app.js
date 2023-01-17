@@ -16,8 +16,8 @@ const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
-const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/court-spot';
-const MongoDBStore = require("connect-mongo");
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/court-spot';
+const MongoStore = require("connect-mongo");
 
 
 //import express routers
@@ -57,18 +57,13 @@ app.use(mongoSanitize()); //protection against Mongo injection
 
 const secret = process.env.SECRET || 'changethissecretlater'
 
-const store = new MongoDBStore({
-    url: dbUrl,
-    secret,
-    touchAfter: 24 * 60 * 60 //(in seconds) lazy session update
-});
-
-store.on("error", function(e){
-    console.log("SESSION STORE ERROR", e);
-})
-
 const sessionConfig = {
-    store,      //store = store
+    store: MongoStore.create({
+        mongoUrl: dbUrl,
+        dbName: 'court-spot-session',
+        secret,
+        touchAfter: 24 * 60 * 60 //(in seconds) lazy session update
+    }),
     name: 'session',
     secret,
     resave: false, 
