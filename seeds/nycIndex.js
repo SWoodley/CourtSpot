@@ -5,7 +5,7 @@ const Court = require('../models/Court');
 const { nycData } = require('./nycOpenDataCourts');
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
-const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+const geocoder = mbxGeocoding({ accessToken: 'pk.eyJ1Ijoic2hha2VlbHdvb2RsZXkiLCJhIjoiY2xjZmJnZ21vMXA3aTNwcDRxeWZnNDUyYyJ9.63cU1BDjd1QyRozzmGy2hA' });
 
 const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/court-spot';
 
