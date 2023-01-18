@@ -1,4 +1,4 @@
-[
+module.exports.nycData = [
     {
         "Prop_ID": "X010",
         "Name": "Cary Leeds Tennis Center at Crotona Park",

@@ -5,7 +5,7 @@ const Court = require('../models/Court');
 
 const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/court-spot';
 
-mongoose.connect(dbURL, {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
