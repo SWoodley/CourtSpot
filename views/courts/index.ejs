@@ -16,7 +16,7 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title"><%= court.title %> </h5>
-                <p class="card-text"><%= court.description %></p>
+                <p class="card-text overflow-hidden"><%- court.description.substring(0, 360) %></p>
                 <p class="card-text">
                     <small class="text-muted"><%= court.location%></small>
                 </p>
