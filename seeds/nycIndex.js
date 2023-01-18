@@ -53,6 +53,10 @@ const seedDB = async () => {
                     url: 'https://res.cloudinary.com/dxra6ljas/image/upload/v1672666824/CourtSpot/carlo-bazzo-KgYMstXJJzA-unsplash_wppwcv.jpg',
                     filename: 'CourtSpot/carlo-bazzo-KgYMstXJJzA-unsplash_wppwcv.jpg'
                 },
+                {
+                    url: 'https://res.cloudinary.com/dxra6ljas/image/upload/v1672666831/CourtSpot/donald-teel-yMzODq5vAr8-unsplash_ltzhvd.jpg',
+                    filename: 'CourtSpot/donald-teel-yMzODq5vAr8-unsplash_ltzhvd.jpg'
+                }
             ]
         })
         await court.save();
