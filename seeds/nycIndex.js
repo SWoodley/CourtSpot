@@ -25,7 +25,7 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
-    await Court.deleteMany({});
+    //await Court.deleteMany({});
     for (courtData of nycData) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;

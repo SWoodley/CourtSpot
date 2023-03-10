@@ -28,7 +28,6 @@ const userRoutes = require('./routes/users');
 
 
 //Setup for MongoDB connection
-//'mongodb://localhost:27017/court-spot'
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
