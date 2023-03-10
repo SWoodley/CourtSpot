@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate')%>
-<div id="cluster-map"></div>
+<div id="cluster-map" crossorigin></div>
 <div class="container"></div>
 <h1 class="m-3">All Courts</h1>
 
@@ -16,7 +16,7 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title"><%= court.title %> </h5>
-                <p class="card-text"><%= court.description %></p>
+                <p class="card-text overflow-hidden"><%- court.description.substring(0, 360) %></p>
                 <p class="card-text">
                     <small class="text-muted"><%= court.location%></small>
                 </p>
